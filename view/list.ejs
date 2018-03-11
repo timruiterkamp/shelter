@@ -7,21 +7,31 @@
 <link rel=stylesheet href=/index.css>
 <main>
   <h1>Shelter</h1>
+  <p>
+    <a href='/form'>Add a Animal</a>
+  </p>
   <div class=grid>
     <% data.forEach(function (entity) { %>
-    <article class=animal>
-      <a class="frame block-link" href="/<%= entity.id %>">
-        <figure class="frame-image frame-image-reveal">
-          <img src="/image/<%= entity.id %>.jpg" alt>
-          <figcaption>
-            <p><%= description(entity) %></p>
-          </figcaption>
-        </figure>
-        <h2><%= entity.name %></h2>
-        <p class=capitalize><%= entity.sex %> · <%= entity.age %> <%= plural('year', entity.age) %> old</p>
-      </a>
-    </article>
-    <% }) %>
+      <article class=animal>
+        <a class="frame block-link" href="/<%= entity.id %>">
+          <figure class="frame-image frame-image-reveal">
+            <img src="/image/<%= entity.id %>.jpg" alt>
+            <figcaption>
+              <p>
+                <%= description(entity) %>
+              </p>
+            </figcaption>
+          </figure>
+          <h2>
+            <%= entity.name %>
+          </h2>
+          <p class=capitalize>
+            <%= entity.sex %> ·
+              <%= entity.age %>
+                <%= plural('year', entity.age) %> old</p>
+        </a>
+      </article>
+      <% }) %>
   </div>
 </main>
 <script src=/index.js></script>

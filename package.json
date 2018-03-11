@@ -16,12 +16,14 @@
   ],
   "dependencies": {
     "ejs": "^2.5.7",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "slug": "^0.9.1"
   },
   "devDependencies": {
     "array-find": "^1.0.0",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "body-parser": "^1.18.2",
     "browser-pack-flat": "^3.0.6",
     "browserify": "^15.2.0",
     "bundle-collapser": "^1.3.0",
