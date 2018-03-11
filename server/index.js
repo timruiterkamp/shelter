@@ -3,13 +3,16 @@
 var express = require('express')
 var db = require('../db')
 var helpers = require('./helpers')
+var path = require('path');
 
 module.exports = express()
   .set('view engine', 'ejs')
   .set('views', 'view')
   .use(express.static('static'))
   // TODO: Serve the images in `db/image` on `/image`.
+  .use('/image', express.static('db/image'))
   .get('/', all)
+
   /* TODO: Other HTTP methods. */
   // .post('/', add)
   // .get('/:id', get)
