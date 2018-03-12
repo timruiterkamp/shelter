@@ -2,9 +2,22 @@
 
 var express = require('express')
 var bodyParser = require('body-parser')
-var slug = require('slug')
+var fs = require('fs')
+var multer = require('multer')
 var db = require('../db')
 var helpers = require('./helpers')
+var upload = multer({
+  dest: 'db/image',
+
+   fileFilter: (req, file, callback) => {
+    if (file.mimetype !== 'image/jpeg') {
+      callback(null, false);
+     } else {
+     callback(null, true);
+    }
+  }
+
+})
 
 
 module.exports = express()
@@ -19,9 +32,7 @@ module.exports = express()
   .get('/', all)
   .get('/form', animalForm)
   .get('/:id', animals)
-  .post('/', addAnimal)
-  // .put('/:id', set)
-  // .patch('/:id', change)
+  .post('/', upload.single('image'), addAnimal)
   .delete('/:id', removeAnimal)
   .listen(1902)
 
@@ -61,7 +72,6 @@ function animalForm(req, res) {
 }
 
 function addAnimal(req, res) {
-  console.log(req.body)
 
   var addAnimal = {
     name: req.body.name,
@@ -100,6 +110,7 @@ function addAnimal(req, res) {
 
   try {
     var newAnimal = db.add(addAnimal)
+    console.log("Dit is de file " + req.file)
     res.redirect('/' + newAnimal.id)
   } catch(err) {
 
