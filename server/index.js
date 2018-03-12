@@ -9,14 +9,14 @@ var helpers = require('./helpers')
 var upload = multer({
   dest: 'db/image',
 
-   fileFilter: (req, file, callback) => {
-    if (file.mimetype !== 'image/jpeg') {
-      callback(null, false);
-     } else {
-     callback(null, true);
+  //information from https://stackoverflow.com/questions/35050071/cant-get-multer-filefilter-error-handling-to-work
+    fileFilter: (req, file, callback) => {
+      if (file.mimetype !== 'image/jpeg'){
+        callback(null, false)
+      } else {
+        callback(null, true)
+      }
     }
-  }
-
 })
 
 
