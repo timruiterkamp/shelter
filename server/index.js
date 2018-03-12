@@ -1,10 +1,11 @@
 'use strict'
 
 var express = require('express')
-var db = require('../db')
-var helpers = require('./helpers')
 var bodyParser = require('body-parser')
 var slug = require('slug')
+var db = require('../db')
+var helpers = require('./helpers')
+
 
 module.exports = express()
   .set('view engine', 'ejs')
@@ -27,7 +28,6 @@ module.exports = express()
 function all(req, res) {
   var result = {errors: [], data: db.all()}
 
-  /* Support both a request for JSON and a request for HTML  */
   res.format({
     json: () => res.json(result),
     html: () => res.render('list.ejs', Object.assign({}, result, helpers))
@@ -61,35 +61,51 @@ function animalForm(req, res) {
 }
 
 function addAnimal(req, res) {
- console.log(req.body)
- var id = slug(req.body.name).toLowerCase()
-console.log(id)
+  console.log(req.body)
 
- var newAnimal = {
-   id: id,
-   name: req.body.name,
-   type: req.body.type,
-   place: req.body.place,
-   sex: req.body.sex,
-   age: req.body.age,
-   vaccinated: req.body.vaccinated,
-   declawed: req.body.declawed,
-   primaryColor: req.body.primaryColor,
-   secondaryColor: req.body.secondaryColor,
-   coat: req.body.coat,
-   weight: req.body.weight,
-   size: req.body.size,
-   length: req.body.length,
-   intake: req.body.intake,
-   description: req.body.description,
-   image: req.body.image
+  var addAnimal = {
+    name: req.body.name,
+    type: req.body.type,
+    place: req.body.shelter,
+    description: req.body.description,
+    sex: req.body.sex,
+    age: parseInt(req.body.age, 10),
+    size: req.body.size,
+    length: req.body.length,
+    vaccinated: req.body.vaccinated == 1,
+    declawed: req.body.declawed,
+    coat: req.body.coat,
+    primaryColor: req.body.primaryColor,
+    secondaryColor: req.body.secondaryColor,
+    weight: parseInt(req.body.weight, 10),
+    intake: req.body.intake
   }
 
+
+  if (addAnimal.type === 'dog' || addAnimal.type === 'rabbit') {
+    console.log('dog or rabbit')
+    addAnimal.declawed = undefined
+    console.log(addAnimal.declawed)
+  }  else if (addAnimal.type === 'cat' || addAnimal.type != undefined) {
+    console.log('cat')
+    addAnimal.declawed = 'true'
+  } else {
+    addAnimal.declawed = undefined
+  }
+
+  if (addAnimal.secondaryColor === '' || addAnimal.secondaryColor === undefined) {
+    addAnimal.secondaryColor = undefined
+  }
+
+
   try {
-    db.add(newAnimal)
-    res.redirect('/' + id)
+    var newAnimal = db.add(addAnimal)
+    res.redirect('/' + newAnimal.id)
   } catch(err) {
-    notFound(422, res)
+
+      notFound(422, res)
+      console.log(err)
+
   }
 }
 

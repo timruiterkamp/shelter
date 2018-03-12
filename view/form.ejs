@@ -11,20 +11,30 @@
     <label>Animal name
       <input name='name' required>
     </label>
-    <label>Animal type
-      <select name='type' required>
-        <option value="cat">Cat</option>
-        <option value="dog">Dog</option>
-        <option value="rabbit">Rabbit</option>
-      </select>
-    </label>
-    <label>Animal shelter place
-      <select name='place' required>
-        <option value="Manhattan Animal Care Center">Manhattan Animal Care Center</option>
-        <option value="Staten Island Animal Care Center">Staten Island Animal Care Center</option>
-        <option value="Brooklyn Animal Care Center">Brooklyn Animal Care Center</option>
-      </select>
-    </label>
+    <fieldset>
+      <legend>Animal type</legend>
+      <label>
+        <input type="radio" name="type" value="dog"> Dog
+      </label>
+      <label>
+        <input type="radio" name="type" value="cat"> Cat
+      </label>
+      <label>
+        <input type="radio" name="type" value="rabbit"> Rabbit
+      </label>
+    </fieldset>
+    <fieldset>
+      <legend>Animal shelter place</legend>
+      <label>
+        <input type="radio" name="shelter" value="Manhattan Animal Care Center"> Manhattan Animal Care Center
+      </label>
+      <label>
+        <input type="radio" name="shelter" value="Staten Island Animal Care Center"> Staten Island Animal Care Center
+      </label>
+      <label>
+        <input type="radio" name="shelter" value="Brooklyn Animal Care Center"> Brooklyn Animal Care Center
+      </label>
+    </fieldset>
     <fieldset>
       <legend>Sex</legend>
       <label>
@@ -41,19 +51,19 @@
     <fieldset>
       <legend>Vaccinated</legend>
       <label>
-        <input type="radio" name="vaccinated" value="vaccinated"> Yes
+        <input type="radio" name="vaccinated" value="yes"> Yes
       </label>
       <label>
-        <input type="radio" name="vaccinated" value="not vaccinated"> No
+        <input type="radio" name="vaccinated" value="no"> No
       </label>
     </fieldset>
     <fieldset>
       <legend>Declawed</legend>
       <label>
-        <input type="radio" name="declawed" value="declawed"> Yes
+        <input type="radio" name="declawed" value="yes"> Yes
       </label>
       <label>
-        <input type="radio" name="declawed" value="not declawed"> No
+        <input type="radio" name="declawed" value="no"> No
       </label>
     </fieldset>
     <label>
