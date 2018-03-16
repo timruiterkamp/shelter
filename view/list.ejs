@@ -11,27 +11,29 @@
     <a href='/form'>Add a Animal</a>
   </p>
   <div class=grid>
-    <% data.forEach(function (entity) { %>
+    <% for (var i = 0; i < data.length; i++) { %>
       <article class=animal>
-        <a class="frame block-link" href="/<%= entity.id %>">
+        <a class="frame block-link" href="/<%= data[i].id %>">
           <figure class="frame-image frame-image-reveal">
-            <img src="/image/<%= entity.id %>.jpg" alt>
+            <img src="/image/<%= data[i].id %>.jpg" alt>
             <figcaption>
               <p>
-                <%= description(entity) %>
+                <%= data[i].name %>
               </p>
             </figcaption>
           </figure>
           <h2>
-            <%= entity.name %>
+            <%= data[i].name %>
           </h2>
           <p class=capitalize>
-            <%= entity.sex %> ·
-              <%= entity.age %>
-                <%= plural('year', entity.age) %> old</p>
+            <p>
+              <%= data[i].sex %>
+            </p>
+            <p>
+              <%= data[i].age %> years old</p>
         </a>
       </article>
-      <% }) %>
+      <% } %>
   </div>
 </main>
 <script src=/index.js></script>

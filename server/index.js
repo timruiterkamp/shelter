@@ -3,10 +3,11 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var fs = require('fs')
+var mysql = require('mysql')
 var multer = require('multer')
 var db = require('../db')
 var helpers = require('./helpers')
-var mysql = require('mysql')
+
 
 require('dotenv').config()
 
@@ -18,53 +19,57 @@ var connection = mysql.createConnection({
 })
 
 connection.connect()
-console.log(connection)
 var upload = multer({dest: 'static/upload/'})
+
 
 module.exports = express()
   .set('view engine', 'ejs')
   .set('views', 'view')
+  .use(express.static('static'))
   .use(bodyParser.urlencoded({
     extended: true
   }))
   .use(bodyParser.json())
-  .use(express.static('static'))
   .use('/image', express.static('db/image'))
-  .get('/', all)
   .get('/form', animalForm)
   .get('/:id', animals)
   .post('/', upload.single('image'), addAnimal)
   .delete('/:id', removeAnimal)
+  .get('/', all)
   .listen(1902)
 
-function all(req, res) {
-  var result = {errors: [], data: db.all()}
+function all(req, res, next) {
+  connection.query('SELECT * FROM animals', done)
 
-  res.format({
-    json: () => res.json(result),
-    html: () => res.render('list.ejs', Object.assign({}, result, helpers))
-  })
+  function done(err, data) {
+    if(err) {
+      next(err)
+    } else {
+      res.format({
+        json: () => res.json(data),
+        html: () =>  res.render('list.ejs', {data: data})
+      })
+    }
+  }
 }
 
-function animals(req, res) {
+function animals(req, res, next) {
   var id = req.params.id
-  var animalId
+  connection.query('SELECT * FROM animals WHERE id = ?', id, done)
 
-  try {
-    animalId = db.has(id)
-  } catch (err) {
-    notFound(400, res)
-  }
 
-  if (animalId) {
-    var getId = {data: db.get(id)}
+  function done(err, data) {
+    if(err) {
+      next(err)
+    } else if (data.length === 0) {
+    next()
 
-    res.format({
-      json: () => res.json(getId),
-      html: () => res.render('detail.ejs', Object.assign({}, getId, helpers))
-    })
-  } else {
-    notFound(404, res)
+    }else {
+      res.format({
+        json: () => res.json(data),
+        html: () =>  res.render('detail.ejs', {data: data[0]})
+      })
+    }
   }
 }
 
@@ -147,5 +152,3 @@ function notFound(error, res) {
     html: () => res.render('error.ejs', Object.assign({}, errorObj, helpers))
   })
 }
-
-connection.end();
