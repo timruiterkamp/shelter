@@ -15,9 +15,11 @@
     "view"
   ],
   "dependencies": {
+    "dotenv": "^5.0.1",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "multer": "^1.3.0",
+    "mysql": "^2.15.0",
     "slug": "^0.9.1"
   },
   "devDependencies": {

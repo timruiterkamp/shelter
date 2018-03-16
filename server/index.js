@@ -6,19 +6,20 @@ var fs = require('fs')
 var multer = require('multer')
 var db = require('../db')
 var helpers = require('./helpers')
-var upload = multer({
-  dest: 'db/image',
+var mysql = require('mysql')
 
-  //information from https://stackoverflow.com/questions/35050071/cant-get-multer-filefilter-error-handling-to-work
-    fileFilter: (req, file, callback) => {
-      if (file.mimetype !== 'image/jpeg'){
-        callback(null, false)
-      } else {
-        callback(null, true)
-      }
-    }
+require('dotenv').config()
+
+var connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 })
 
+connection.connect()
+console.log(connection)
+var upload = multer({dest: 'static/upload/'})
 
 module.exports = express()
   .set('view engine', 'ejs')
@@ -146,3 +147,5 @@ function notFound(error, res) {
     html: () => res.render('error.ejs', Object.assign({}, errorObj, helpers))
   })
 }
+
+connection.end();
