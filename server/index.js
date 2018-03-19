@@ -39,7 +39,7 @@ module.exports = express()
   .listen(1902)
 
 function all(req, res, next) {
-  connection.query('SELECT * FROM animals', done)
+  connection.query('SELECT * FROM animals', done )
 
   function done(err, data) {
     if(err) {
@@ -55,7 +55,7 @@ function all(req, res, next) {
 
 function animals(req, res, next) {
   var id = req.params.id
-  connection.query('SELECT * FROM animals WHERE id = ?', id, done)
+  connection.query('SELECT * FROM animals LEFT JOIN shelter ON animals.place = shelter.shelterName WHERE animals.id = ?',id, done)
 
 
   function done(err, data) {
@@ -85,6 +85,7 @@ function addAnimal(req, res, next) {
     name: req.body.name,
     type: req.body.type,
     place: req.body.shelter,
+    shelterName: req.body.shelter,
     description: req.body.description,
     sex: req.body.sex,
     age: parseInt(req.body.age, 10),
