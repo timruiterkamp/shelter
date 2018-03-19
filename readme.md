@@ -19,11 +19,12 @@ To get a fully working repo we need to have a database.
 There are two ways to add the database, by importing a mysql file or manual adding the database.
 
 _The importing solution_
-In the root of my repo there is a file called `animalShelterDB.sql` . This file can be used to upload an existing database.
+In the root of my repo there is a file called `animalShelterDB.sql`.  
+This file can be used to upload an existing database.  
 To do so, create a mysql database and in connect with it.  
 In your command line you can use the following code:  
 `mysql -u <username> -p <databasename> < animalShelterDB.sql`  
-It will ask for your database, after you entered it correctly you will have a working database for the repo.  
+It will ask for your username and password, after you entered it correctly you will have a working database for the repo.  
 
 _The manual solution_
 Create the following setup by hand:
