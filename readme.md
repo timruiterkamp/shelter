@@ -20,12 +20,16 @@ There are two ways to add the database, by importing a mysql file or manual addi
 
 _The importing solution_
 In the root of my repo there is a file called `animalShelterDB.sql` . This file can be used to upload an existing database.
-To do so, create a mysql database and in connect with it. In your command line you can use the following code:
-`mysql -u <username> -p <databasename> < animalShelterDB.sql`
-It will ask for your database, after you entered it correctly you will have a working database for the repo.
+To do so, create a mysql database and in connect with it.  
+In your command line you can use the following code:  
+`mysql -u <username> -p <databasename> < animalShelterDB.sql`  
+It will ask for your database, after you entered it correctly you will have a working database for the repo.  
 
 _The manual solution_
 Create the following setup by hand:
+
+![Database setup](https://github.com/timruiterkamp/shelter/blob/master/AnimalShelterDB.jpg "Database setup")
+
 
 You can now add animals through localhost:1902/form
 
