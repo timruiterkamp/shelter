@@ -47,7 +47,7 @@ function all(req, res, next) {
     } else {
       res.format({
         json: () => res.json(data),
-        html: () =>  res.render('list.ejs', {data: data})
+        html: () =>  res.render('list.ejs', Object.assign({}, helpers, {data: data} ))
       })
     }
   }
@@ -67,7 +67,7 @@ function animals(req, res, next) {
     }else {
       res.format({
         json: () => res.json(data),
-        html: () =>  res.render('detail.ejs', {data: data[0]})
+        html: () =>  res.render('detail.ejs',  Object.assign({}, helpers, {data: data[0]} ))
       })
     }
   }
@@ -77,9 +77,11 @@ function animalForm(req, res) {
   res.render('form.ejs')
 }
 
-function addAnimal(req, res) {
+function addAnimal(req, res, next) {
+  var addAnimal
 
-  var addAnimal = {
+  connection.query('INSERT INTO animals SET ?',
+  addAnimal = {
     name: req.body.name,
     type: req.body.type,
     place: req.body.shelter,
@@ -95,15 +97,12 @@ function addAnimal(req, res) {
     secondaryColor: req.body.secondaryColor,
     weight: parseInt(req.body.weight, 10),
     intake: req.body.intake
-  }
+  }, done)
 
 
   if (addAnimal.type === 'dog' || addAnimal.type === 'rabbit') {
-    console.log('dog or rabbit')
     addAnimal.declawed = undefined
-    console.log(addAnimal.declawed)
   }  else if (addAnimal.type === 'cat' || addAnimal.type != undefined) {
-    console.log('cat')
     addAnimal.declawed = 'true'
   } else {
     addAnimal.declawed = undefined
@@ -113,29 +112,29 @@ function addAnimal(req, res) {
     addAnimal.secondaryColor = undefined
   }
 
-
-  try {
-    var newAnimal = db.add(addAnimal)
-    console.log("Dit is de file " + req.file)
-    res.redirect('/' + newAnimal.id)
-  } catch(err) {
-
-      notFound(422, res)
-      console.log(err)
-
+  function done(err, data) {
+    if (err) {
+      next(err)
+    } else {
+      res.redirect('/' + data.insertId)
+    }
   }
 }
 
-function removeAnimal(req, res) {
+function removeAnimal(req, res, next) {
   var id = req.params.id
-  try {
-    db.remove(id)
-    res.status(204).end()
-  } catch (err) {
-    if (db.removed(id)) {
-      notFound(410, res)
+  connection.query('DELETE FROM animals WHERE id = ?', id, done )
+
+  function done(err) {
+    if (err) {
+      next(err)
+      if (db.removed(id)) {
+        notFound(410, res)
+      } else {
+        notFound(404, res)
+      }
     } else {
-      notFound(404, res)
+      res.json({status: 'ok'})
     }
   }
 }

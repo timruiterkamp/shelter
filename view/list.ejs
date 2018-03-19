@@ -30,7 +30,8 @@
               <%= data[i].sex %>
             </p>
             <p>
-              <%= data[i].age %> years old</p>
+              <%= data[i].age %>
+                <%= plural('year', data[i].age) %> old</p>
         </a>
       </article>
       <% } %>
