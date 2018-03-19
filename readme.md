@@ -1,28 +1,48 @@
-<!-- lint disable no-html -->
+# Storage assignment
 
-# Shelter
+Animal shelter assignment made with express and mysql
 
-> A partially working Express server.
-> Can you fix and finish it?
+## Installing the Repo
 
-![](screenshot.png)
+Fork the Animal shelter repo and change the directory to the folder.
 
-![](screenshot-detail.png)
-
-## Install
-
-Fork this repository, `cd` into it, and:
-
-```bash
+```
 npm install
 npm run build # build and minify static files
 npm start # runs server on `localhost:1902`
 ```
 
-## Todo
+To get a fully working repo we need to have a database.
 
-There’s a lot of things left to do.
-See the [assignment][] description for more info.
+## Getting the database working
+
+There are two ways to add the database, by importing a mysql file or manual adding the database.
+
+_The importing solution_
+In the root of my repo there is a file called `animalShelterDB.sql` . This file can be used to upload an existing database.
+To do so, create a mysql database and in connect with it. In your command line you can use the following code:
+`mysql -u <username> -p <databasename> < animalShelterDB.sql`
+It will ask for your database, after you entered it correctly you will have a working database for the repo.
+
+_The manual solution_
+Create the following setup by hand:
+
+You can now add animals through localhost:1902/form
+
+## Connect with the server
+
+To connect with the server you have to use your own mysql information in the index.js (By choice i would recommend using [dotenv](https://www.npmjs.com/package/dotenv) for this).
+
+The code that has to be changed:
+
+```javascript
+var connection = mysql.createConnection({
+  host: //your database host,
+  user://your mysql username,
+  password: //your mysql password,
+  database: //your database name
+})
+```
 
 ## Brief description of code
 
@@ -45,10 +65,10 @@ view/error.ejs - ejs template for errors
 
 ## Brief description of npm scripts
 
-*   `npm start` — Start the server (on port 1902)
-*   `npm test` — Tests the database
-*   `npm run lint` — Check browser code and node code for problems
-*   `npm run build` — Build browser code
+* `npm start` — Start the server (on port 1902)
+* `npm test` — Tests the database
+* `npm run lint` — Check browser code and node code for problems
+* `npm run build` — Build browser code
 
 ## Data
 
@@ -61,9 +81,4 @@ volunteering at your local animal shelter, or donating!
 [MIT][] © [Titus Wormer][author]
 
 [mit]: license
-
 [author]: http://wooorm.com
-
-[assignment]: https://github.com/cmda-be/course-17-18/blob/master/week-4.md#shelter
-
-[nycacc]: http://nycacc.org
