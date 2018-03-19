@@ -30,7 +30,7 @@ module.exports = express()
     extended: true
   }))
   .use(bodyParser.json())
-  .use('/image', express.static('db/image'))
+  .use('/image', express.static('static/upload'))
   .get('/form', animalForm)
   .get('/:id', animals)
   .post('/', upload.single('image'), addAnimal)
@@ -115,6 +115,14 @@ function addAnimal(req, res, next) {
   function done(err, data) {
     if (err) {
       next(err)
+    } else if (req.file) {
+        fs.rename(req.file.path, 'static/upload/' + data.insertId + '.jpg', err => {
+          if (err) {
+            console.error(err)
+          } else {
+            res.redirect('/' + data.insertId)
+          }
+        })
     } else {
       res.redirect('/' + data.insertId)
     }
